@@ -22,11 +22,11 @@ def run_flask():
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
 
-# التوكن الخاص بك[cite: 12]
-TOKEN = "8927298315:AAHm7rSBSCRrOmBrs2HxM5RXZWwIWaUmLDI"[cite: 12]
+# التوكن الخاص بك
+TOKEN = "8927298315:AAElwG_IhJEkv_KeN7yZC6z9hUb25UP6wfY"
 
-# ذاكرة محلية لتخزين المستخدمين المفعلين[cite: 12]
-local_activated_users = set()[cite: 12]
+# ذاكرة محلية لتخزين المستخدمين المفعلين
+local_activated_users = set()
 
 async def is_user_activated(user_id: int) -> bool:
     return user_id in local_activated_users
