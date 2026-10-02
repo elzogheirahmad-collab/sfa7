@@ -10,17 +10,14 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
 from flask import Flask
+import threading
 
-# إعداد خادم Flask للرد على فحص المنافذ في Render
+# إعداد خادم Flask للرد على فحص المنافذ في Render وخادم الإنتاج
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return "ELZOGHEIR Trading Bot is running successfully!"
-
-if __name__ == "__main__":
-  port = int(os.environ.get("PORT", 5000))
-  app.run(host="0.0.0.0", port=port)
 
 # التوكن الخاص بك
 TOKEN = "8927298315:AAHm7rSBSCRrOmBrs2HxM5RXZWwIWaUmLDI"
@@ -571,9 +568,12 @@ async def process_back_home(callback_query: types.CallbackQuery):
         "👇 *اختر القسم المطلوب للبدء:*"
     )
     try:
-        await callback_query.message.edit_caption(caption=welcome_text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        await callback_query.message.edit_caption(caption=welcome_text, parse_pop="Markdown", reply_markup=main_menu_keyboard())
     except Exception:
-        await callback_query.message.delete()
+        try:
+            await callback_query.message.delete()
+        except Exception:
+            pass
         await callback_query.message.answer_photo(
             photo="https://iili.io/ncJ949f.png",
             caption=welcome_text,
@@ -581,11 +581,20 @@ async def process_back_home(callback_query: types.CallbackQuery):
             reply_markup=main_menu_keyboard()
         )
 
-async def main():
-    import threading
-    flask_thread = threading.Thread(target=run_flask, daemon=True)
-    flask_thread.start()
+# دالة تشغيل البوت بطريقة غير متزامنة آمنة للعمل مع Gunicorn/Flask
+async def run_bot():
+    print("Starting Telegram Bot Polling...")
     await dp.start_polling(bot)
 
+def run_flask():
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
 if __name__ == '__main__':
-    asyncio.run(main())
+    # تشغيل Flask في خيط منفصل إذا تم تشغيل الملف محلياً
+    port = int(os.environ.get("PORT", 5000))
+    flask_thread = threading.Thread(target=run_flask, daemon=True)
+    flask_thread.start()
+    
+    # تشغيل البوت باستخدام حلقة الحدث
+    asyncio.run(run_bot())
