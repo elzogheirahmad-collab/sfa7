@@ -582,12 +582,9 @@ async def process_back_home(callback_query: types.CallbackQuery):
         )
 
 async def main():
-    # تشغيل خادم Flask في خلفية مستقلة (Daemon Thread)
     import threading
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
-    
-    # تشغيل بوت تيليجرام
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
