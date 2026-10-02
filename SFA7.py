@@ -23,7 +23,7 @@ def run_flask():
     app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
 
 # التوكن الخاص بك
-TOKEN = "8927298315:AAElwG_IhJEkv_KeN7yZC6z9hUb25UP6wfY"
+TOKEN = "8927298315:AAHm7rSBSCRrOmBrs2HxM5RXZWwIWaUmLDI"
 
 # ذاكرة محلية لتخزين المستخدمين المفعلين
 local_activated_users = set()
