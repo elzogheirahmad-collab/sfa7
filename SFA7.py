@@ -18,9 +18,9 @@ app = Flask(__name__)
 def home():
     return "ELZOGHEIR Trading Bot is running successfully!"
 
-def run_flask():
-    port = int(os.environ.get('PORT', 10000))
-    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
+if __name__ == "__main__":
+  port = int(os.environ.get("PORT", 5000))
+  app.run(host="0.0.0.0", port=port)
 
 # التوكن الخاص بك
 TOKEN = "8927298315:AAHm7rSBSCRrOmBrs2HxM5RXZWwIWaUmLDI"
